@@ -76,3 +76,28 @@ fn nothing_selected_returns_empty_vector() {
     let expected = vec![];
     assert_eq!(result, expected);
 }
+
+use simulator::dice::roll;
+
+#[test]
+fn roll_d6_is_between_1_and_6() {
+    let mut rng = rand::rng();
+    for _ in 0..1000 {
+        let result = roll(&mut rng, 6);
+        assert!((1..=6).contains(&result));
+    }
+}
+
+use simulator::dice::roll_dice;
+
+#[test]
+fn roll_2d6_is_between_2_and_12() {
+    let mut rng = rand::rng();
+
+    for _ in 0..1000 {
+        let result: Vec<u32> = roll_dice(&mut rng, 2, 6);
+        let sum: u32 = result.iter().sum();
+
+        assert!((2..=12).contains(&sum));
+    }
+}
