@@ -1,3 +1,4 @@
+#[derive(Copy, Clone)]
 pub enum Operation {
     GreaterOrEqual,
     Greater,

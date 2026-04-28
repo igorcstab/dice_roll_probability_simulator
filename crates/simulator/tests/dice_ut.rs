@@ -1,4 +1,5 @@
-use simulator::dice::eval_dice_range;
+use simulator::comparison::Operation;
+use simulator::dice::*;
 
 #[test]
 fn two_d4_returns_2_to_8() {
@@ -77,8 +78,6 @@ fn nothing_selected_returns_empty_vector() {
     assert_eq!(result, expected);
 }
 
-use simulator::dice::roll;
-
 #[test]
 fn roll_d6_is_between_1_and_6() {
     let mut rng = rand::rng();
@@ -88,16 +87,82 @@ fn roll_d6_is_between_1_and_6() {
     }
 }
 
-use simulator::dice::roll_dice;
+#[test]
+fn simulate_1d6_greater_than_3() {
+    let mut rng = rand::rng();
+    let tolerance = 1.0;
+
+    let sim = Simulation {
+        number_of_rolls: 1_000_000,
+        dice: Dice {
+            number_of_dice: 1,
+            faces: 6,
+        },
+        condition: Condition {
+            operation: Operation::Greater,
+            target: 3,
+        },
+    };
+
+    let result = sim.run(&mut rng);
+
+    println!(
+        "Predicted: {:.0}%, Expected: 50%, Error: {:.2}%",
+        result,
+        (result - 50.0).abs()
+    );
+
+    assert!((result - 50.0).abs() < tolerance)
+}
 
 #[test]
-fn roll_2d6_is_between_2_and_12() {
+fn simulate_3d6_smaller_equal_than_3() {
     let mut rng = rand::rng();
+    let tolerance = 1.0;
 
-    for _ in 0..1000 {
-        let result: Vec<u32> = roll_dice(&mut rng, 2, 6);
-        let sum: u32 = result.iter().sum();
+    let sim = Simulation {
+        number_of_rolls: 1_000_000,
+        dice: Dice {
+            number_of_dice: 3,
+            faces: 6,
+        },
+        condition: Condition {
+            operation: Operation::SmallerOrEqual,
+            target: 3,
+        },
+    };
 
-        assert!((2..=12).contains(&sum));
-    }
+    let result = sim.run(&mut rng);
+    println!(
+        "Predicted: {:.1}%, Expected: 0.5%, Error: {:.2}%",
+        result,
+        (result - 0.46).abs()
+    );
+    assert!((result - 0.5).abs() < tolerance)
+}
+
+#[test]
+fn simulate_3d6_smaller_equal_than_4() {
+    let mut rng = rand::rng();
+    let tolerance = 1.0;
+
+    let sim = Simulation {
+        number_of_rolls: 1_000_000,
+        dice: Dice {
+            number_of_dice: 3,
+            faces: 6,
+        },
+        condition: Condition {
+            operation: Operation::SmallerOrEqual,
+            target: 4,
+        },
+    };
+
+    let result = sim.run(&mut rng);
+    println!(
+        "Predicted: {:.0}%, Expected: 2%, Error: {:.2}%",
+        result,
+        (result - 1.9).abs()
+    );
+    assert!((result - 2.0).abs() < tolerance)
 }
