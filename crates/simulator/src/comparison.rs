@@ -7,7 +7,7 @@ pub enum Operation {
     Smaller,
 }
 
-pub fn compare(_result: i32, _op: Operation, _target: i32) -> bool {
+pub fn compare(_result: u32, _op: Operation, _target: u32) -> bool {
     match _op {
         Operation::Greater => _result > _target,
         Operation::GreaterOrEqual => _result >= _target,

@@ -35,7 +35,7 @@ pub fn roll(rng: &mut impl rand::Rng, faces: u32) -> u32 {
 
 impl Condition {
     pub fn check(&self, value: u32) -> bool {
-        compare(value as i32, self.operation, self.target as i32)
+        compare(value, self.operation, self.target)
     }
 }
 
