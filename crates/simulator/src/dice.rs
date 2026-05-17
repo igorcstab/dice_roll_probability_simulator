@@ -1,5 +1,3 @@
-use rand::RngExt;
-
 use crate::comparison::*;
 
 pub struct Dice {
@@ -30,7 +28,7 @@ pub fn eval_dice_range(number_of_dice: u32, faces: u32) -> Vec<u32> {
 }
 
 pub fn roll(rng: &mut impl rand::Rng, faces: u32) -> u32 {
-    rng.random_range(1..=faces)
+    rng.gen_range(1..=faces)
 }
 
 impl Condition {
@@ -48,7 +46,7 @@ impl Simulation {
         let success = (0..self.number_of_rolls)
             .filter(|_| {
                 let sum: u32 = (0..self.dice.number_of_dice)
-                    .map(|_| rng.random_range(1..=self.dice.faces))
+                    .map(|_| rng.gen_range(1..=self.dice.faces))
                     .sum();
 
                 self.condition.check(sum)
