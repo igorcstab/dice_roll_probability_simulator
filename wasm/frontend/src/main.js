@@ -44,9 +44,7 @@ async function main() {
         }
     }
 
-    form.addEventListener("submit", (event) => {
-        event.preventDefault();
-
+    function roll() {
         const dice =
             Number(firstNumber.value);
 
@@ -59,6 +57,10 @@ async function main() {
         const target =
             Number(thirdNumber.value);
 
+        if (!dice || !faces || !target) {
+            return;
+        }
+
         const result = run_simulation(
             10000000,
             dice,
@@ -69,19 +71,36 @@ async function main() {
 
         resultElement.textContent =
             `${result.toPrecision(2)}%`;
-    });
+    }
 
     firstNumber.addEventListener(
         "change",
-        populateThirdNumber
+        () => {
+            populateThirdNumber();
+            roll();
+        }
     );
 
     secondNumber.addEventListener(
         "change",
-        populateThirdNumber
+        () => {
+            populateThirdNumber();
+            roll();
+        }
+    );
+
+    thirdNumber.addEventListener(
+        "change",
+        roll
+    );
+
+    operationSelect.addEventListener(
+        "change",
+        roll
     );
 
     populateThirdNumber();
+    roll();
 }
 
 main();
