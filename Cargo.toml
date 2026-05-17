@@ -1,4 +1,6 @@
 [workspace]
-members = [
-    "crates/simulator"
-]
+resolver = "3"
+members = ["crates/simulator", "wasm"]
+
+[workspace.dependencies]
+getrandom = { version = "0.2", features = ["js"] }

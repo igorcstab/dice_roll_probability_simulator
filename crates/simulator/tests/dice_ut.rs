@@ -1,3 +1,5 @@
+use rand::SeedableRng;
+use rand::rngs::SmallRng;
 use simulator::comparison::Operation;
 use simulator::dice::*;
 
@@ -80,7 +82,7 @@ fn nothing_selected_returns_empty_vector() {
 
 #[test]
 fn roll_d6_is_between_1_and_6() {
-    let mut rng = rand::rng();
+    let mut rng = SmallRng::from_entropy();
     for _ in 0..1000 {
         let result = roll(&mut rng, 6);
         assert!((1..=6).contains(&result));
@@ -89,7 +91,7 @@ fn roll_d6_is_between_1_and_6() {
 
 #[test]
 fn simulate_1d6_greater_than_3() {
-    let mut rng = rand::rng();
+    let mut rng = SmallRng::from_entropy();
     let tolerance = 1.0;
 
     let sim = Simulation {
@@ -117,7 +119,7 @@ fn simulate_1d6_greater_than_3() {
 
 #[test]
 fn simulate_3d6_smaller_equal_than_3() {
-    let mut rng = rand::rng();
+    let mut rng = SmallRng::from_entropy();
     let tolerance = 1.0;
 
     let sim = Simulation {
@@ -143,7 +145,7 @@ fn simulate_3d6_smaller_equal_than_3() {
 
 #[test]
 fn simulate_3d6_smaller_equal_than_4() {
-    let mut rng = rand::rng();
+    let mut rng = SmallRng::from_entropy();
     let tolerance = 1.0;
 
     let sim = Simulation {
